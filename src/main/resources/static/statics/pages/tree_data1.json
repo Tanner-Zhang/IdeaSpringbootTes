@@ -1,0 +1,40 @@
+[{
+	"id":1,
+	"text":"部门一",
+	"children":[{
+		"id":11,
+		"text":"子部门1",
+		"children":[{
+			"id":111,
+			"text":"职位1"
+		},{
+			"id":112,
+			"text":"职位2"
+		},{
+			"id":113,
+			"text":"职位3"
+		}]
+	},{
+		"id":12,
+		"text":"子部门2",
+		"state":"closed",
+		"children":[{
+			"id":121,
+			"text":"职位1"
+		},{
+			"id":122,
+			"text":"职位2",
+			"attributes":{
+				"p1":"Custom Attribute1",
+				"p2":"Custom Attribute2"
+			}
+		},{
+			"id":123,
+			"text":"职位3"
+		},{
+			"id":124,
+			"text":"职位4",
+			"checked":true
+		}]
+	}]
+}]

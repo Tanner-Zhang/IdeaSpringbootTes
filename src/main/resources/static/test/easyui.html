@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="jquery-easyui-1.8.2/themes/icon.css">
+    <link rel="stylesheet" href="jquery-easyui-1.8.2/themes/default/easyui.css">
+
+    <script src="jquery-easyui-1.8.2/jquery.min.js"></script>
+    <script src="jquery-easyui-1.8.2/jquery.easyui.min.js"></script>
+
+
+</head>
+<body>
+<body class="easyui-layout">
+<div data-options="region:'north',title:'North Title',split:true" style="height:100px;"></div>
+<div data-options="region:'south',title:'South Title',split:true" style="height:100px;"></div>
+<div data-options="region:'east',title:'East',split:true" style="width:100px;"></div>
+<div data-options="region:'west',title:'West',split:true" style="width:100px;">
+    <h2>Basic SideMenu</h2>
+    <p>Collapse the side menu to display the main icon.</p>
+    <div style="margin:20px 0;">
+        <a href="javascript:;" class="easyui-linkbutton" onclick="toggle()">Toggle</a>
+    </div>
+    <div id="sm" class="easyui-sidemenu" data-options="data:data"></div>
+    <script type="text/javascript">
+        var data = [{"text":"系统管理","iconCls":"icon-sum","state":"open","children":[{"text":"部门管理"},{"text":"部门管理"},{"text":"部门管理"}]}];
+        //alert(data);
+
+        $(function(){
+            alert(1)
+            $.ajax({
+                url:"/menu",
+                type:"get",
+                dataType: "json",
+                success:function(data1){
+                    alert(JSON.stringify(data1[0]));
+                    var data= data1;
+                    toggle(a)
+                },
+                error:function(){
+                    alert("请求失败!!!");
+                }
+
+            });
+
+        });
+
+        function toggle(){
+
+            var opts = $('#sm').sidemenu('options');
+            $('#sm').sidemenu(opts.collapsed ? 'expand' : 'collapse');
+            opts = $('#sm').sidemenu('options');
+            $('#sm').sidemenu('resize', {
+                width: opts.collapsed ? 60 : 200
+            })
+        }
+    </script>
+
+
+</div>
+<div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;"></div>
+</body>
+</html>

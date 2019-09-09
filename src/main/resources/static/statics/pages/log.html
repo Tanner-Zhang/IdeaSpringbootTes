@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../css/audit.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+</head>
+<body>
+<div class="easyui-accordion" data-options="multiple:true" style="width:95%;height1:95%;">
+    <div title="日志筛选" data-options="iconCls:'icon-ok'" style="overflow:auto;padding:10px;">
+        <dl class="secitem">
+            <dt class="secitem_brand">所属模块</dt>
+            <dd>
+                <a class="select" href="#">全部</a>
+                <a href="#">用户管理</a>
+                <a href="#">组织管理</a>
+                <a href="#">角色管理</a>
+                <a href="#">授权管理</a>
+                <a href="#">公文管理</a>
+                <a href="#">事务监控</a>
+            </dd>
+            <dt class="secitem_brand">操作类型</dt>
+            <dd>
+                <a class="select" href="#">全部</a>
+                <a href="#">创建</a>
+                <a href="#">更新</a>
+                <a href="#">删除</a>
+            </dd>
+            <dt class="secitem_brand">审核状态</dt>
+            <dd>
+                <a class="select" href="#">全部</a>
+                <a href="#">已审核</a>
+                <a href="#">未审核</a>
+            </dd>
+        </dl>
+    </div>
+</div>
+<table id="applyTime" class="easyui-datagrid" style="width:95%;height:95%" toolbar="#toolbar" pagination="true"
+       rownumbers="true" fitColumns="true" singleSelect="true"
+       data-options="remoteSort:false,multiSort:true,
+       rowStyler: function(index){
+               var x = index;
+					if (x>2){
+						return 'background-color:#CCE6FF;color:rgba(116, 154, 231, 1);';
+					}
+				}">
+    <thead>
+    <tr style="text-align: center">
+        <th field="applicant" width="40px" style="text-align: center">申请人</th>
+        <th field="applyTime" width="70px" sortable="true">申请时间</th>
+        <th field="supervisor" width="25px">审核人</th>
+        <th field="auditTime" width="70px" sortable="true">审核时间</th>
+        <th field="operationType" width="35px">操作类型</th>
+        <th field="module" width="30px">所属模块</th>
+        <th field="expanding" width="130px">扩展信息</th>
+        <th field="condition" width="20px">状态</th>
+    </tr>
+    </thead>
+    <tr>
+        <td field="applicant">系统管理员</td>
+        <td field="applyTime" width="50px">2019/8/21 16:20:54</td>
+        <td field="supervisor" width="50px"></td>
+        <td field="auditTime" width="50px"></td>
+        <td field="operationType" width="50px">创建</td>
+        <td field="module" width="50px">用户管理</td>
+        <td field="expanding" width="50px">用户名：test，用户姓名：test</td>
+        <td field="condition" width="50px">
+            <a class="easyui-linkbutton" iconCls="icon-no" plain="true"></a>
+        </td>
+    </tr>
+    <tr>
+        <td field="applicant">系统管理员</td>
+        <td field="applyTime" width="50px">2019/8/21 14:23:32</td>
+        <td field="supervisor" width="50px"></td>
+        <td field="auditTime" width="50px"></td>
+        <td field="operationType" width="50px">创建</td>
+        <td field="module" width="50px">用户管理</td>
+        <td field="expanding" width="50px">用户名：小赵，用户姓名：小赵</td>
+        <td field="condition" width="50px">
+            <a class="easyui-linkbutton" iconCls="icon-no" plain="true"></a>
+        </td>
+    </tr>
+    <tr>
+        <td field="applicant">系统管理员</td>
+        <td field="applyTime" width="50px">2019/8/21 14:23:32</td>
+        <td field="supervisor" width="50px"></td>
+        <td field="auditTime" width="50px"></td>
+        <td field="operationType" width="50px">创建</td>
+        <td field="module" width="50px">用户管理</td>
+        <td field="expanding" width="50px">用户名：333，用户姓名：323</td>
+        <td field="condition" width="50px">
+            <a class="easyui-linkbutton" iconCls="icon-no" plain="true"></a>
+        </td>
+    </tr>
+    <tr>
+        <td field="applicant">系统管理员</td>
+        <td field="applyTime" width="50px">2019/8/15 10:43:35</td>
+        <td field="supervisor" width="50px">张珊</td>
+        <td field="auditTime" width="50px">2019/8/15 15:43:35</td>
+        <td field="operationType" width="50px">更新</td>
+        <td field="module" width="50px">用户管理</td>
+        <td field="expanding" width="50px">用户名：王云，用户姓名：王云</td>
+        <td field="condition" width="50px">
+            <a class="easyui-linkbutton" iconCls="icon-ok" plain="true"></a>
+        </td>
+    </tr>
+    <tr>
+        <td field="applicant">系统管理员</td>
+        <td field="applyTime" width="50px">2019/8/16 9:43:35</td>
+        <td field="supervisor" width="50px">张珊</td>
+        <td field="auditTime" width="50px">2019/8/15 9:55:23</td>
+        <td field="operationType" width="50px">删除</td>
+        <td field="module" width="50px">组织管理</td>
+        <td field="expanding" width="50px">组织名：人事部</td>
+        <td field="condition" width="50px">
+            <a class="easyui-linkbutton" iconCls="icon-ok" plain="true"></a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

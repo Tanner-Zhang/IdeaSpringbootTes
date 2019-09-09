@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/demo/demo.css">
+    <link rel="stylesheet" type="text/css" href="../css/audit.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+</head>
+<body style="padding: 10px">
+<div id="toolbar">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newRole()">新增角色</a>
+</div>
+<div id="cc" class="easyui-layout" style="width:95%;height:400px;">
+    <div id="p" data-options="region:'east',split:true" title="权限列表" style="width:210px;" class="easyui-panel">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="saveAccredit()">保存授权</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-undo" plain="true" onclick="repeal()">恢复授权</a>
+        <hr>
+        <span style="padding: 10px">权限名称</span>
+        <ul id="tt" class="easyui-tree" data-options="url:'tree_data3.json',method:'get',animate:true,checkbox:true">
+        </ul>
+    </div>
+    <div data-options="region:'center',title:'角色列表'">
+        <table id="dg" class="easyui-datagrid" pagination="true" style="width:100%;height:100%"
+               toolbar="#toolbar" fitColumns="true" singleSelect="true"
+               data-options="rowStyler: function(index,row){
+                   var x = index;
+                        if (x%2==0){
+                            return 'background-color:#CCE6FF;color:rgba(116, 154, 231, 1);';
+                        }
+                    }">
+            <thead>
+            <tr>
+                <th field="roleNo" width="30px" style="text-align: center">序号</th>
+                <th field="roleName" width="40px">角色名称</th>
+                <th field="operation" width="30px" align="center">操作</th>
+            </tr>
+            </thead>
+            <tr>
+                <td field="roleNo" width="40px" style="text-align: center">1</td>
+                <td field="roleName" width="70px">系统管理员</td>
+                <td field="operation" width="50px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="edit()">修改</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyRole()">删除</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-filter" plain="true" onclick="editRole()">权限</a>
+                </td>
+            </tr>
+            <tr>
+                <td field="roleNo" width="40px" style="text-align: center">2</td>
+                <td field="roleName" width="70px">超级管理员</td>
+                <td field="operation" width="50px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="edit()">修改</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyRole()">删除</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-filter" plain="true" onclick="editRole()">权限</a>
+                </td>
+            </tr>
+            <tr>
+                <td field="roleNo" width="40px" style="text-align: center">3</td>
+                <td field="roleName" width="70px">普通用户</td>
+                <td field="operation" width="50px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="edit()">修改</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyRole()">删除</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-filter" plain="true" onclick="editRole()">权限</a>
+                </td>
+            </tr>
+            <tr>
+                <td field="roleNo" width="40px" style="text-align: center">4</td>
+                <td field="roleName" width="70px">普通管理员</td>
+                <td field="operation" width="50px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="edit()">修改</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyRole()">删除</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-filter" plain="true" onclick="editRole()">权限</a>
+                </td>
+            </tr>
+            <tr>
+                <td field="roleNo" width="40px" style="text-align: center">5</td>
+                <td field="roleName" width="70px">审计员</td>
+                <td field="operation" width="50px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="edit()">修改</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyRole()">删除</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-filter" plain="true" onclick="editRole()">权限</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+     closed="true" buttons="#dlg-buttons">
+    <form id="fm" method="post" novalidate>
+        <div class="fitem" style="padding: 10px">
+            <label>角色编号:</label>
+            <input name="roleNo" class="easyui-textbox" readonly type="text" style="background-color: #858585;">
+        </div>
+        <div class="fitem" style="padding: 10px">
+            <label>角色名称:</label>
+            <input name="roleName" class="easyui-textbox" required="true">
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveRole()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+</div>
+<script type="text/javascript">
+    var url;
+    function saveAccredit(){
+        window.confirm("授权保存成功！")
+    }
+    var num=0;
+    function repeal(){
+        num++;
+        window.confirm("返回"+num+"次！")
+    }
+    function newRole(){
+        $('#dlg').dialog('open').dialog('setTitle','New Role');
+        $('#fm').form('clear');
+        url = '';
+    }
+    function edit(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $('#dlg').dialog('open').dialog('setTitle','Edit Role');
+            $('#fm').form('load',row);
+            url = 'update_user.php?id='+row.id;
+        }
+    }
+    function editRole(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $('#dlg').dialog('open').dialog('setTitle','Edit Role');
+            $('#fm').form('load',row);
+            url = 'update_user.php?id='+row.id;
+        }
+    }
+    function saveRole(){
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                var result = eval('('+result+')');
+                if (result.errorMsg){
+                    $.messager.show({
+                        title: 'Error',
+                        msg: result.errorMsg
+                    });
+                } else {
+                    $('#dlg').dialog('close');		// close the dialog
+                    $('#dg').datagrid('reload');	// reload the user data
+                }
+            }
+        });
+    }
+    function destroyRole(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $.messager.confirm('Confirm','确定要删除该用户吗?',function(r){
+                if (r){
+                    $.post('destroy_user.php',{id:row.id},function(result){
+                        if (result.success){
+                            $('#dg').datagrid('reload');	// reload the user data
+                        } else {
+                            $.messager.show({	// show error message
+                                title: 'Error',
+                                msg: result.errorMsg
+                            });
+                        }
+                    },'json');
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

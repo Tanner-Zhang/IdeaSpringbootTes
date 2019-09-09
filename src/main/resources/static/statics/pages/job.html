@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/demo/demo.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+</head>
+<body style="padding: 10px">
+<div style="margin:10px 0;width:95%;">
+    <select name="dName" class="easyui-combobox" style="width:120px;" panelHeight="200px" editable="false">
+        <option>-请选择部门-</option>
+        <option value="人事部">人事部</option>
+        <option value="采购部">采购部</option>
+        <option value="行政部">行政部</option>
+        <option value="财务部">财务部</option>
+    </select>
+    <input id="ss" class="easyui-searchbox" data-options="prompt:'职位名称',
+				handler: function(e){
+					var v = $(e.data.target).textbox('getValue');
+					alert('搜索框的值是：' + (v ? v : 'empty'));
+				}" style="width:300px">
+    <span style="float: right"><a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">新增职位</a></span>
+</div>
+<div id="cc" class="easyui-layout" style="width:95%;height:95%;">
+    <div id="p" data-options="region:'west',split:true" title="部门树" style="width:200px;" class="easyui-panel">
+        <ul id="tt" class="easyui-tree" data-options="url:'tree_data1.json',method:'get',animate:true,lines:true,
+        onContextMenu: function(e,node){
+					e.preventDefault();
+					$(this).tree('select',node.target);
+					$('#mm').menu('show',{
+						left: e.pageX,
+						top: e.pageY
+					});
+				},
+		onClick: function(node){
+					$(this).tree('beginEdit',node.target);
+				}"></ul>
+        <ul class="easyui-tree" data-options="url:'tree_data2.json',method:'get',animate:true,lines:true"></ul>
+    </div>
+    <div id="mm" class="easyui-menu" style="width:120px;">
+        <div onclick="append()" data-options="iconCls:'icon-add'">Append</div>
+        <div onclick="removeit()" data-options="iconCls:'icon-remove'">Remove</div>
+        <div class="menu-sep"></div>
+        <div onclick="expand()">Expand</div>
+        <div onclick="collapse()">Collapse</div>
+    </div>
+    <div data-options="region:'center',title:'部门与职位详细信息'">
+        <table id="dg" class="easyui-datagrid"  style="width:100%;height:100%;" toolbar="#toolbar"
+               singleSelect="true" collapsible="true" pagination="true" pageSize="10"
+               data-options="url:'jobInfo',rowStyler: function(index,row){
+                   var x = row.deptNo;
+                        if (x%2==0){
+                            return 'background-color:#7adcff;color:#fff;';
+                        }
+				}">
+            <thead>
+                <tr>
+                    <th data-options="field:'deptNo'" styler="cellStyler" halign="center" width="10%" >部门编号</th>
+                    <th data-options="field:'job',align:'center'" halign="center" width="15%">职位名称</th>
+                    <th data-options="field:'createTime',align:'center',formatter:dateFormatter" halign="center" width="15%">创建时间</th>
+                    <th data-options="field:'createUser',align:'center'" halign="center" width="10%">创建人</th>
+                    <th data-options="field:'dName'" width="10%" halign="center">所属部门</th>
+                    <th data-options="field:'status',align:'left'" halign="center" width="30%">简介</th>
+                    <th data-options="field:'operation',formatter:formatOper" halign="center" align="center" width="10%">操作</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="dlg" class="easyui-dialog" style="width:400px;height:300px;padding:10px 20px"
+     closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">部门与职位信息</div>
+    <form tethod="post" novalidate>
+        <div class="fitem">
+            <label>部门编号:</label>
+            <input name="deptNo" class="easyui-textbox" required="true">
+        </div>
+        <div class="fitem">
+            <label>职位名称:</label>
+            <input name="job" class="easyui-textbox" required="true">
+        </div>
+        <div class="fitem">
+            <label>所属部门:</label>
+            <select name="dName" class="easyui-combobox" style="width:158px;" panelHeight="200px" editable="false">
+                <option value="采购部" selected>采购部</option>
+                <option value="人事部">人事部</option>
+                <option value="行政部">行政部</option>
+                <option value="财务部">财务部</option>
+            </select>
+        </div>
+        <div class="fitem" style="margin-bottom:20px">
+            <label>简介:</label>
+            <input class="easyui-textbox" type="text" name="description" data-options="multiline:true,prompt: '请简短描述该职位性质'" style="height:60px">
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveJob()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+</div>
+<script type="text/javascript">
+    function dateFormatter(value,row,index){
+        var da = value;
+        da = new Date(da);
+        var year = da.getFullYear();
+        var month = da.getMonth()+1;
+        var date = da.getDate();
+        return ([year,month,date].join('-'));
+    }
+    function formatOper(){
+        var e = "<a href='javascript:void(0' class='easyui-linkbutton' iconCls='icon-edit' plain='true' onclick='editUser()'>编辑</a>";
+        var d = " <a href='javascript:void(0)' class='easyui-linkbutton' iconCls='icon-remove' plain='true' onclick='destroyUser()'>删除</a>";
+        return e + d;
+    }
+    $(function(){
+        var pager = $('#dg').datagrid().datagrid('getPager');	// get the pager of datagrid
+    })
+    function getData(){
+        var rows = [];
+        for(var i=1; i<=800; i++){
+            var amount = Math.floor(Math.random()*1000);
+            var price = Math.floor(Math.random()*1000);
+            rows.push({
+                inv: 'Inv No '+i,
+                date: $.fn.datebox.defaults.formatter(new Date()),
+                name: 'Name '+i,
+                amount: amount,
+                price: price,
+                cost: amount*price,
+                note: 'Note '+i
+            });
+        }
+        return rows;
+    }
+
+    function pagerFilter(data){
+        if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
+            data = {
+                total: data.length,
+                rows: data
+            }
+        }
+        var dg = $(this);
+        var opts = dg.datagrid('options');
+        var pager = dg.datagrid('getPager');
+        pager.pagination({
+            onSelectPage:function(pageNum, pageSize){
+                opts.pageNumber = pageNum;
+                opts.pageSize = pageSize;
+                pager.pagination('refresh',{
+                    pageNumber:pageNum,
+                    pageSize:pageSize
+                });
+                dg.datagrid('loadData',data);
+            }
+        });
+        if (!data.originalRows){
+            data.originalRows = (data.rows);
+        }
+        var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+        var end = start + parseInt(opts.pageSize);
+        data.rows = (data.originalRows.slice(start, end));
+        return data;
+    }
+
+    $(function(){
+        $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', getData());
+    });
+    function cellStyler(index){
+        if ( index< 30){
+            return 'background-color:rgba(200,216,243,0.66);color:red;';
+        }
+    }
+</script>
+<script type="text/javascript">
+    var url;
+    function newUser(){
+        $('#dlg').dialog('open').dialog('setTitle','新建职位管理');
+        $('#fm').form('clear');
+        url = '';
+    }
+    function editUser(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $('#dlg').dialog('open').dialog('setTitle','编辑职位管理');
+            $('#fm').form('load',row);
+            url = 'update_user.php?id='+row.id;
+        }
+    }
+    function saveJob(){
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                var result = eval('('+result+')');
+                if (result.errorMsg){
+                    $.messager.show({
+                        title: 'Error',
+                        msg: result.errorMsg
+                    });
+                } else {
+                    $('#dlg').dialog('close');		// close the dialog
+                    $('#dg').datagrid('reload');	// reload the user data
+                }
+            }
+        });
+    }
+    function destroyUser(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $.messager.confirm('Confirm','Are you sure you want to destroy this user?',function(r){
+                if (r) {
+                    $.post('destroy_user.php', {id: row.id}, function (result) {
+                        if (result.success) {
+                            $('#dg').datagrid('reload');	// reload the user data
+                        } else {
+                            $.messager.show({	// show error message
+                                title: 'Error',
+                                msg: result.errorMsg
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function append(){
+        var t = $('#tt');
+        var node = t.tree('getSelected');
+        t.tree('append', {
+            parent: (node?node.target:null),
+            data: [{
+                text: 'new item1'
+            },{
+                text: 'new item2'
+            }]
+        });
+    }
+    function removeit(){
+        var node = $('#tt').tree('getSelected');
+        $('#tt').tree('remove', node.target);
+    }
+    function collapse(){
+        var node = $('#tt').tree('getSelected');
+        $('#tt').tree('collapse',node.target);
+    }
+    function expand(){
+        var node = $('#tt').tree('getSelected');
+        $('#tt').tree('expand',node.target);
+    }
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function(jq, iconCls){
+            return jq.each(function(){
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function(e){
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility','hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')){
+                    t.textbox('getIcon',0).css('visibility','hidden');
+                }
+                t.textbox('textbox').bind('keyup', function(){
+                    var icon = t.textbox('getIcon',0);
+                    if ($(this).val()){
+                        icon.css('visibility','visible');
+                    } else {
+                        icon.css('visibility','hidden');
+                    }
+                });
+            });
+        }
+    });
+    $(function(){
+        $('#ss').textbox().textbox('addClearBtn', 'icon-clear');
+    });
+</script>
+<style type="text/css">
+    .ftitle{
+        font-size:14px;
+        font-weight:bold;
+        padding:5px 0;
+        margin-bottom:10px;
+        border-bottom:1px solid #ccc;
+    }
+    .fitem{
+        margin-bottom:5px;
+    }
+    .fitem label{
+        display:inline-block;
+        width:80px;
+    }
+    .fitem input{
+        width:160px;
+    }
+</style>
+</body>
+</html>

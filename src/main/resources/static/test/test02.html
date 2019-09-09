@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="jquery-easyui-1.8.2/themes/default/easyui.css">
+    <link rel="stylesheet" href="jquery-easyui-1.8.2/themes/icon.css">
+    <script src="jquery-easyui-1.8.2/jquery.min.js"></script>
+    <script src="jquery-easyui-1.8.2/jquery.easyui.min.js"></script>
+
+
+</head>
+<body class="easyui-layout">
+<div data-options="region:'north',title:'North Title',split:true" style="height:100px;">
+    <h2>Basic CheckBox</h2>
+    <form id="ff">
+        <div style="margin-bottom:20px">
+            <input class="easyui-checkbox" name="fruit" value="Apple" label="Apple:">
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-checkbox" name="fruit" value="Orange" label="Orange:">
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-checkbox" name="fruit" value="Banana" label="Banana:">
+        </div>
+    </form>
+</div>
+<div data-options="region:'south',title:'South Title',split:true" style="height:100px;">
+    <h2>Basic PropertyGrid</h2>
+    <p>Click on row to change each property value.</p>
+    <div style="margin:20px 0;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="showGroup()">ShowGroup</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="hideGroup()">HideGroup</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="showHeader()">ShowHeader</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="hideHeader()">HideHeader</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="getChanges()">GetChanges</a>
+    </div>
+    <table id="pg" class="easyui-propertygrid" style="width:300px" data-options="
+				url:'propertygrid_data1.json',
+				method:'get',
+				showGroup:true,
+				scrollbarSize:0
+			">
+    </table>
+
+    <script type="text/javascript">
+        function showGroup(){
+            $('#pg').propertygrid({
+                showGroup:true
+            });
+        }
+        function hideGroup(){
+            $('#pg').propertygrid({
+                showGroup:false
+            });
+        }
+        function showHeader(){
+            $('#pg').propertygrid({
+                showHeader:true
+            });
+        }
+        function hideHeader(){
+            $('#pg').propertygrid({
+                showHeader:false
+            });
+        }
+        function getChanges(){
+            var s = '';
+            var rows = $('#pg').propertygrid('getChanges');
+            for(var i=0; i<rows.length; i++){
+                s += rows[i].name + ':' + rows[i].value + ',';
+            }
+            alert(s)
+        }
+    </script>
+</div>
+<div data-options="region:'east',title:'East',split:true" style="width:100px;">
+    <h2>Basic DateBox</h2>
+    <p>Click the calendar image on the right side.</p>
+    <div style="margin:20px 0;"></div>
+    <input class="easyui-datebox"></input>
+</div>
+<div data-options="region:'west',title:'West',split:true" style="width:100px;">
+    <h2>Basic SideMenu</h2>
+    <p>Collapse the side menu to display the main icon.</p>
+    <div style="margin:20px 0;">
+        <a href="javascript:;" class="easyui-linkbutton" onclick="toggle()">Toggle</a>
+    </div>
+    <div id="sm" class="easyui-sidemenu" data-options="data:data"></div>
+    <script type="text/javascript">
+        var data = [{
+            text: 'Item1',
+            iconCls: 'icon-sum',
+            state: 'open',
+            children: [{
+                text: 'Option1'
+            },{
+                text: 'Option2'
+            },{
+                text: 'Option3',
+                children: [{
+                    text: 'Option31'
+                },{
+                    text: 'Option32'
+                }]
+            }]
+        },{
+            text: 'Item2',
+            iconCls: 'icon-more',
+            children: [{
+                text: 'Option4'
+            },{
+                text: 'Option5'
+            },{
+                text: 'Option6'
+            }]
+        }];
+
+        function toggle(){
+            var opts = $('#sm').sidemenu('options');
+            $('#sm').sidemenu(opts.collapsed ? 'expand' : 'collapse');
+            opts = $('#sm').sidemenu('options');
+            $('#sm').sidemenu('resize', {
+                width: opts.collapsed ? 60 : 200
+            })
+        }
+    </script>
+
+
+
+</div>
+<div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
+    <h2>Basic Panel</h2>
+    <p>The panel is a container for other components or elements.</p>
+    <div style="margin:20px 0 10px 0;">
+        <a href="#" class="easyui-linkbutton" onclick="javascript:$('#p').panel('open')">Open</a>
+        <a href="#" class="easyui-linkbutton" onclick="javascript:$('#p').panel('close')">Close</a>
+    </div>
+    <div id="p" class="easyui-panel" title="Basic Panel" style="width:700px;height:200px;padding:10px;">
+        <p style="font-size:14px">jQuery EasyUI framework helps you build your web pages easily.</p>
+        <ul>
+            <li>easyui is a collection of user-interface plugin based on jQuery.</li>
+            <li>easyui provides essential functionality for building modem, interactive, javascript applications.</li>
+            <li>using easyui you don't need to write many javascript code, you usually defines user-interface by writing some HTML markup.</li>
+            <li>complete framework for HTML5 web page.</li>
+            <li>easyui save your time and scales while developing your products.</li>
+            <li>easyui is very easy but powerful.</li>
+        </ul>
+    </div>
+
+</div>
+</body>
+</html>

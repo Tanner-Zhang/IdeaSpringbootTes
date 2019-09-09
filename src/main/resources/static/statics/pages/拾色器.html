@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+</head>
+<body>
+<label>颜色选择:</label>
+<input type="color" id="colorGet" onchange="ColorGetFn(this)">&nbsp;&nbsp;
+<label>颜色输出:</label>
+<input type="text" id="colorInput" onchange="ColorInputFn(this)">
+<input class="easyui-textbox" type="text" name="description" data-options="multiline:true" style="height:60px" placeholder="请简短描述该职位性质">
+<script type="text/javascript">
+    function ColorGetFn(dom){
+        document.getElementById('colorInput').value = dom.value;
+    }
+    function ColorInputFn(dom){
+        document.getElementById('colorGet').value = dom.value;
+    }
+</script>
+<script>
+    document.write(returnCitySN["cip"]+','+returnCitySN["cname"])
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table title="Products" class="easyui-treegrid" style="width:700px;height:300px"
+       data-options="
+				url: '/test',
+				rownumbers: true,
+				pagination: true,
+				pageSize: 2,
+				pageList: [2,10,20],
+				idField: 'id',
+				treeField: 'name',
+				onBeforeLoad: function(row,param){
+					if (!row) {	// load top level rows
+						param.id = 0;	// set id=0, indicate to load new page rows
+					}
+				}
+			">
+    <thead>
+    <tr>
+        <th data-options="field:'name',width:180">Task Name</th>
+        <th data-options="field:'persons',width:60,align:'right'">Persons</th>
+        <th data-options="field:'begin',width:80">Begin Date</th>
+        <th data-options="field:'end',width:80">End Date</th>
+        <th data-options="field:'progress',width:120,formatter:formatProgress">Progress</th>
+    </tr>
+    </thead>
+</table>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>所有用户信息</title>
+	<link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/color.css">
+	<script type="text/javascript" src="../../test/jquery-easyui-1.8.2/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+</head>
+<body>
+	<div id="tb">
+		角色名称：<input type="text" name="rol.name"  id="qName" textarea="输入角色名称"/>
+		<a id="standardQueryBtn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
+	</div>
+	<table id="dg" class="easyui-datagrid" style="width:90%;height:90%"
+		   toolbar="#toolbar" pagination="true"
+		   rownumbers="true" fitColumns="true" singleSelect="true">
+		<thead>
+			<tr style="text-align: center">
+				<th field="userName" width="50">名称</th>
+				<th field="realName" width="50">真实姓名</th>
+				<th field="sex" width="50">性别</th>
+				<th field="createTime" width="50">创建时间</th>
+				<th field="role" width="50">所属角色</th>
+				<th field="operation" width="50">操作</th>
+			</tr>
+		</thead>
+		<tr th:each="user:${list}">
+			<td field="userName" width="50" th:text="${user.getUsername}">凯皇</td>
+			<td field="realName" width="50" th:text="${user.getRealName}">admin</td>
+			<td field="sex" width="50" th:text="${user.getSex}">男</td>
+			<td field="createTime" width="50" th:text="${user.getCreateTime}">2019-08-15</td>
+			<td field="role" width="50" th:text="${user.getRole}">系统管理员</td>
+			<td field="operation" width="50">
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">编辑</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">删除</a>
+			</td>
+		</tr>
+		<tr th:remove="all">
+			<td field="username" width="50">虞姬</th>
+			<td field="real name" width="50">user</th>
+			<td field="sex" width="50">女</th>
+			<td field="createTime" width="50">2019-08-15</th>
+			<td field="role" width="50">管理员</th>
+			<td field="operation" width="50">
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">编辑</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">删除</a>
+			</td>
+		</tr>
+	</table>
+	<div id="toolbar">
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">添加</a>
+	</div>
+	
+	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+			closed="true" buttons="#dlg-buttons">
+		<div class="ftitle">User Information</div>
+		<form id="fm" method="post" novalidate>
+			<div class="fitem">
+				<label>userName:</label>
+				<input name="userName" class="easyui-textbox" required="true">
+			</div>
+			<div class="fitem">
+				<label>realName:</label>
+				<input name="realName" class="easyui-textbox" required="true">
+			</div>
+			<div class="fitem">
+				<label>sex:</label>
+				<input name="sex" class="easyui-textbox" validType="email">
+			</div>
+			<div class="fitem">
+				<label>rol:</label>
+				<input name="rol" class="easyui-textbox">
+			</div>
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+	</div>
+	<script type="text/javascript">
+		var url;
+		function newUser(){
+			$('#dlg').dialog('open').dialog('setTitle','New User');
+			$('#fm').form('clear');
+			url = '';
+		}
+		function editUser(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$('#dlg').dialog('open').dialog('setTitle','Edit User');
+				$('#fm').form('load',row);
+				url = 'update_user.php?id='+row.id;
+			}
+		}
+		function saveUser(){
+			$('#fm').form('submit',{
+				url: url,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: 'Error',
+							msg: result.errorMsg
+						});
+					} else {
+						$('#dlg').dialog('close');		// close the dialog
+						$('#dg').datagrid('reload');	// reload the user data
+					}
+				}
+			});
+		}
+		function destroyUser(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm','Are you sure you want to destroy this user?',function(r){
+					if (r){
+						$.post('destroy_user.php',{id:row.id},function(result){
+							if (result.success){
+								$('#dg').datagrid('reload');	// reload the user data
+							} else {
+								$.messager.show({	// show error message
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#address-btn").click(function(){
+				addAddress();
+			});
+		});
+		function addAddress(){
+			$.ajax({
+				"url":"/addUser",
+				"data":$("#form-CD").serialize(),
+				"type":"post",
+				"dataType":"json",
+				"success":function(json){
+					if(json.state==2000){
+						alert("添加成功！");
+					}else{
+						alert("添加失败！")
+					}
+				}
+			});
+		}
+	</script>
+	<style type="text/css">
+		#fm{
+			margin:0;
+			padding:10px 30px;
+		}
+		.ftitle{
+			font-size:14px;
+			font-weight:bold;
+			padding:5px 0;
+			margin-bottom:10px;
+			border-bottom:1px solid #ccc;
+		}
+		.fitem{
+			margin-bottom:5px;
+		}
+		.fitem label{
+			display:inline-block;
+			width:80px;
+		}
+		.fitem input{
+			width:160px;
+		}
+	</style>
+</body>
+</html>

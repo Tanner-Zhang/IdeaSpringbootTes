@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户操作日志</title>
+    <link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../test/jquery-easyui-1.8.2/themes/color.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+</head>
+<body>
+<div style="padding-bottom: 10px">
+    操作用户：<input class="easyui-textbox" name="operator" style="width: 130px;"/>&nbsp;&nbsp;&nbsp;
+    操作日期：
+    <input id="front" class="easyui-datebox" data-options="sharedCalendar:'#cc'">至
+    <input class="easyui-datebox">
+    <div id="cc" class="easyui-calendar"></div>&nbsp;&nbsp;&nbsp;
+    IP地址：
+    <input class="easyui-textbox" name="IP" style="width: 130px;"/>
+    <a href="javascript:void(0)" class="easyui-linkbutton c8" data-options="iconCls:'icon-search'">查询</a>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('#front').datebox().datebox('calendar').calendar({
+            validator: function(date){
+                var now = new Date();
+                var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                return date<=d1;
+            }
+        });
+    });
+</script>
+<table id="dg" class="easyui-datagrid" style="width:95%;height:95%"
+       toolbar="#toolbar" pagination="true"
+       rownumbers="true" fitColumns="true" singleSelect="false"
+       data-options="rowStyler: function(index){
+               var x = index;
+					if (x%2==1){
+						return 'background-color:rgba(202, 232, 252, 1);color:rgba(71, 123, 255, 1);';
+					}
+				}">
+    <thead>
+    <tr>
+        <th data-options="field:'ck',checkbox:true"></th>
+        <th field="createTime" width="40" halign="center">发生日期/时间</th>
+        <th field="userName" width="30" halign="center">用户</th>
+        <th field="IP" width="25" align="center" halign="center">IP地址</th>
+        <th field="serviceName" width="40" align="center" halign="center">服务名称</th>
+        <th field="operation" width="40" halign="center">操作内容</th>
+        <th field="description" width="60" align="center" halign="center">描述</th>
+    </tr>
+    </thead>
+    <tr th:each="log:${logs}">
+        <td data-options="field:'ck',checkbox:true"></td>
+        <td field="createTime" th:text="${#dates.format(log.createTime,'yyyy-MM-dd hh:mm:ss')}">2019/8/28</td>
+        <td field="userName" th:text="${log.userName}">admin</td>
+        <td field="IP" th:text="${log.IP}">128.1.128.3</td>
+        <td field="serviceName" th:text="${log.serviceName}">用户登录</td>
+        <td field="operation" th:text="${log.operation}">admin用户密码登录</td>
+        <td field="description" th:text="${log.description}">状态正常</td>
+    </tr>
+    <tr th:remove="all">
+        <td field="createTime" th:text="${#dates.format(log.createTime,'yyyy-MM-dd')}">2019/8/28</td>
+        <td field="userName" th:text="${log.userName}">admin</td>
+        <td field="IP" th:text="${log.IP}">128.1.128.3</td>
+        <td field="serviceName" th:text="${log.serviceName}">用户登录</td>
+        <td field="operation" th:text="${log.operation}">admin用户密码登录</td>
+        <td field="description" th:text="${log.IP}">状态正常</td>
+    </tr>
+</table>
+<div id="toolbar">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="newUser()">刷新</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true" onclick="newUser()">导出</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="newUser()">删除</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-eliminate" plain="true" onclick="newUser()">清除</a>
+</div>
+
+<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+     closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">用户信息</div>
+    <form id="fm" method="post" novalidate>
+        <div class="fitem">
+            <label>用户名:</label>
+            <input name="userName" class="easyui-textbox" required="true">
+        </div>
+        <div class="fitem">
+            <label>真实姓名:</label>
+            <input name="realName" class="easyui-textbox" required="true">
+        </div>
+        <div class="fitem">
+            <label>密码:</label>
+            <input name="password" class="easyui-textbox" required="true" type="password">
+        </div>
+        <div style="margin-bottom:20px">
+            <label>性别:</label>
+            <input type="radio" name="rol" checked="checked" value="0"
+                   style="margin-left: 50px" width="40px">男
+            <input type="radio" name="rol" value="1" style="margin-left: 37px " width="40px">女
+        </div>
+        <div class="fitem">
+            <label>所属角色:</label>
+            <select name="role" class="easyui-combobox" style="width:158px;" panelHeight="200px" editable="false">
+                <option value="系统管理员">系统管理员</option>
+                <option value="管理员">管理员</option>
+                <option value="普通人员">普通人员</option>
+            </select>
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+</div>
+<script type="text/javascript">
+    var url;
+    function newUser(){
+        $('#dlg').dialog('open').dialog('setTitle','New User');
+        $('#fm').form('clear');
+        url = '';
+    }
+    function editUser(row){
+        //var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $('#dlg').dialog('open').dialog('setTitle','Edit User');
+            $('#fm').form('load',row);
+            url = 'update_user.php?id='+row.id;
+        }
+    }
+    function editRole(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $('#dlg').dialog('open').dialog('setTitle','Edit User');
+            $('#fm').form('load',row);
+            url = 'update_user.php?id='+row.id;
+        }
+    }
+    function saveUser(){
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                var result = eval('('+result+')');
+                if (result.errorMsg){
+                    $.messager.show({
+                        title: 'Error',
+                        msg: result.errorMsg
+                    });
+                } else {
+                    $('#dlg').dialog('close');		// close the dialog
+                    $('#dg').datagrid('reload');	// reload the user data
+                }
+            }
+        });
+    }
+    function destroyUser(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $.messager.confirm('Confirm','确定要删除该用户吗?',function(r){
+                if (r){
+                    $.post('destroy_user.php',{id:row.id},function(result){
+                        if (result.success){
+                            $('#dg').datagrid('reload');	// reload the user data
+                        } else {
+                            $.messager.show({	// show error message
+                                title: 'Error',
+                                msg: result.errorMsg
+                            });
+                        }
+                    },'json');
+                }
+            });
+        }
+    }
+</script>
+<script type="text/javascript">
+    function cellStyler(index) {
+        if (index < 30) {
+            return 'background-color:rgba(200,216,243,0.66);color:red;';
+        }
+    }
+    $(document).ready(function(){
+        $("#address-btn").click(function(){
+            addAddress();
+        });
+    });
+    function addAddress(){
+        $.ajax({
+            "url":"/addUser",
+            "data":$("#form-CD").serialize(),
+            "type":"post",
+            "dataType":"json",
+            "success":function(json){
+                if(json.state==2000){
+                    alert("添加成功！");
+                }else{
+                    alert("添加失败！")
+                }
+            }
+        });
+    }
+</script>
+<style type="text/css">
+    #fm{
+        margin:0;
+        padding:10px 30px;
+    }
+    .ftitle{
+        font-size:14px;
+        font-weight:bold;
+        padding:5px 0;
+        margin-bottom:10px;
+        border-bottom:1px solid #ccc;
+    }
+    .fitem{
+        margin-bottom:5px;
+    }
+    .fitem label{
+        display:inline-block;
+        width:80px;
+    }
+    .fitem input{
+        width:160px;
+    }
+</style>
+</body>
+</html>

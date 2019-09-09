@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../demo.css">
+    <script type="text/javascript" src="../../jquery.min.js"></script>
+    <script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+</head>
+<body>
+<body class="easyui-layout">
+<div data-options="region:'north',title:'信息管理平台',split:true" style="height:100px;">
+
+    <a href="javascript:void(0)" id="sb" class="easyui-splitbutton"
+       data-options="menu:'#mm',iconCls:'icon-ok'" onclick="javascript:alert('ok')">Ok</a>
+    <div id="mm" style="width:100px;">
+        <div data-options="iconCls:'icon-ok'">Ok</div>
+        <div data-options="iconCls:'icon-cancel'">Cancel</div>
+    </div>
+
+    <input class="easyui-switchbutton" checked>
+    <input class="easyui-switchbutton" data-options="onText:'Yes',offText:'No'">
+
+</div>
+<div data-options="region:'south',title:'South Title',split:true" style="height:300px;">
+    <a href="javascript:void(0)" id="mb" class="easyui-menubutton"
+       data-options="menu:'#mm1',iconCls:'icon-edit'">Edit</a>
+    <div id="mm1" style="width:150px;">
+        <div data-options="iconCls:'icon-undo'">Undo</div>
+        <div data-options="iconCls:'icon-redo'">Redo</div>
+        <div class="menu-sep"></div>
+        <div>Cut</div>
+        <div>Copy</div>
+        <div>Paste</div>
+        <div class="menu-sep"></div>
+        <div data-options="iconCls:'icon-remove'">Delete</div>
+        <div>Select All</div>
+    </div>
+    <a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'">easyui</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'"
+       onclick="javascript:alert('static.statics.css.easyui')">easyui</a>
+</div>
+
+<div data-options="region:'east',title:'East',split:false" style="width:495px;">
+    <div id="p" class="easyui-panel" title="My Panel"
+         style="width:500px;height:150px;padding:0px;background:#fafafa;"
+         data-options="iconCls:'icon-save',closable:true,
+    collapsible:true,minimizable:true,maximizable:true">
+        <div id="tt2" class="easyui-tabs" style="width:100%;height:100%;">
+            <div title="Tab1" style="padding:10px;display:none;">
+                <input class="easyui-filebox" style="width:100%">
+            </div>
+            <div title="Tab2" data-options="closable:true" style="overflow:auto;padding:20px;display:none;">
+                <input class="easyui-datetimespinner" style="width:100%">
+            </div>
+            <div title="Tab3" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;display:none;">
+                <input id="ss" class="easyui-timespinner" style="width:100%;"
+                           required="required" data-options="min:'08:30',showSeconds:true">
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div data-options="region:'west',title:'West',split:false" style="width: 200px;">
+    <h2>管理菜单</h2>
+    <div id="sm" class="easyui-sidemenu" data-options="data:data"></div>
+
+        <script type="text/javascript">
+
+           // var data = [{"text":"系统管理","iconCls":"icon-sum","state":"open","children":[{"text":"部门管理"},{"text":"部门管理"},{"text":"部门管理"}]}];
+        var data;
+        $(function(){
+            alert(1)
+            $.ajax({
+                url:"/menu",
+                type:"get",
+                dataType: "json",
+                success:function(data1){
+                    alert(JSON.stringify(data1[0]));
+                     var data =data1[0];
+                },
+                error:function(){
+                    alert("请求失败!!!");
+                }
+
+            });
+
+        });
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+    <!--<div id="aa" class="easyui-accordion" style="width:300px;height:200px;">
+        <div title="Title1" data-options="iconCls:'icon-save'" style="overflow:auto;padding:10px;">
+            <h3 style="color:#0099FF;">Accordion for jQuery</h3>
+            <p>Accordion is a part of easyui framework for jQuery.
+                It lets you define your accordion component on web page more easily.</p>
+        </div>
+        <div title="Title2" data-options="iconCls:'icon-reload',selected:true" style="padding:10px;">
+            <form id="ff">
+                <div style="margin-bottom:20px">
+                    <input class="easyui-radiobutton" name="fruit" value="Apple" label="Apple:">
+                </div>
+                <div style="margin-bottom:20px">
+                    <input class="easyui-radiobutton" name="fruit" value="Orange" label="Orange:">
+                </div>
+                <div style="margin-bottom:20px">
+                    <input class="easyui-radiobutton" name="fruit" value="Banana" label="Banana:">
+                </div>
+            </form>
+        </div>
+        <div title="Title3">
+            <select id="cc" class="easyui-combobox" name="dept" style="width:200px;">
+                <option value="aa">aitem1</option>
+                <option>bitem2</option>
+                <option>bitem3</option>
+                <option>ditem4</option>
+                <option>eitem5</option>
+            </select>
+            <input class="easyui-tagbox" value="Apple, Orange" label="Add a tag" style="width:100%">
+        </div>
+    </div>
+    <select id="cc1" class="easyui-combotree" style="width:200px;"
+            data-options="url:'get_data.php',required:true">
+    </select>
+
+
+
+    <ul id="tt3" class="easyui-tree">
+        <li>
+            <span>Folder</span>
+            <ul>
+                <li>
+                    <span>Sub Folder 1</span>
+                    <ul>
+                        <li><span><a href="#">File 11</a></span></li>
+                        <li><span>File 12</span></li>
+                        <li><span>File 13</span></li>
+                    </ul>
+                </li>
+                <li><span>File 2</span></li>
+                <li><span>File 3</span></li>
+            </ul>
+        </li>
+        <li><span>File21</span></li>
+    </ul>
+
+    <div id="mm4" class="easyui-menu" style="width:120px;">
+        <div>New</div>
+        <div>
+            <span>Open</span>
+            <div style="width:150px;">
+                <div><b>Word</b></div>
+                <div>Excel</div>
+                <div>PowerPoint</div>
+            </div>
+        </div>
+        <div data-options="iconCls:'icon-save'">Save</div>
+        <div class="menu-sep"></div>
+        <div>Exit</div>
+    </div>-->
+
+</div>
+
+<div data-options="region:'center',title:'center title'" style="padding:0px;background:#eee;">
+    <div id="tt" class="easyui-tabs" style="width: 100%;height:250px;">
+        <div title="Tab1" style="padding:20px;display:none;">
+            tab1
+        </div>
+        <div title="Tab2" data-options="closable:true" style="overflow:auto;padding:20px;display:none;">
+            <input class="easyui-datetimebox" name="birthday"
+                   data-options="required:true,showSeconds:false" value="3/4/2010 2:3" style="width:150px">
+        </div>
+        <div title="Tab3" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;display:none;">
+            <input class="easyui-slider" value="12" style="width:300px"
+                   data-options="showTip:true,rule:[0,'|',25,'|',50,'|',75,'|',100]">
+        </div>
+    </div>
+    <div id="pp" class="easyui-pagination" style="background:#efefef;border:1px solid #ccc;"
+         data-options="total:2000,pageSize:10">
+    </div>
+
+
+</div>
+</body>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../easyui.css">
+	<link rel="stylesheet" href="../icon.css">
+	<script src="../jquery-1.11.3.min.js"></script>
+	<script src="../jquery.easyui.min.js"></script>
+
+</head>
+<body>
+	<div id="sm" class="easyui-sidemenu" data-options="data:data"></div>
+	<script type="text/javascript">
+		//var data = [{"text":"系统管理","iconCls":"icon-sum","state":"open","children":[{"text":"部门管理"},{"text":"部门管理"},{"text":"部门管理"}]}];
+		var data = [{
+			text: 'Item1',
+			iconCls: 'icon-sum',
+			state: 'open',
+			children: [{
+				text: 'Option1'
+			},{
+				text: 'Option2'
+			},{
+				text: 'Option3',
+				children: [{
+					text: 'Option31'
+				},{
+					text: 'Option32'
+				}]
+			}]
+		},{
+			text: 'Item2',
+			iconCls: 'icon-more',
+			children: [{
+				text: 'Option4'
+			},{
+				text: 'Option5'
+			},{
+				text: 'Option6'
+			}]
+		}];
+		var jsonStr = JSON.stringify(data);
+		alert(jsonStr);
+	</script>
+
+
+	<!--<script type="text/javascript">
+
+		var data;
+$(function(){
+
+	alert(1)
+	$.ajax({
+		url:"/menu",
+		type:"get",
+		dataType: "json",
+		success:function(data1){
+			console.log(data1);
+			//alert(data1[0]);
+			//var arr=data1[0];
+			data=JSON.stringify(data1);
+			alert(data);
+
+
+		},
+		error:function(){
+			alert("请求失败!!!");
+		}
+
+	});
+
+});
+
+
+
+		/*var data = [{
+	        text: 'Item1',
+	        iconCls: 'icon-sum',
+	        state: 'open',
+	        children: [{
+	            text: 'Option1'
+	        },{
+	            text: 'Option2'
+	        },{
+	            text: 'Option3',
+	            children: [{
+	                text: 'Option31'
+	            },{
+	                text: 'Option32'
+	            }]
+	        }]
+	    },{
+	        text: 'Item2',
+	        iconCls: 'icon-more',
+	        children: [{
+	            text: 'Option4'
+	        },{
+	            text: 'Option5'
+	        },{
+	            text: 'Option6'
+	        }]
+	    }];*/
+	</script>-->
+</body>
+</html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.demo.dao.UserMapper">
+    <resultMap id="userList" type="com.cy.demo.entity.User">
+        <result property="username" column="username"/>
+        <result property="realName" column="realName"/>
+        <result property="sex" column="sex"/>
+        <result property="role" column="role"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="isDelete" column="isDelete"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyTime" column="modify_time"/>
+    </resultMap>
+    <!--List<User> findAllRolByDid(int deptId) 查询部门内所有角色信息-->
+    <select id="findAllRolByDid" resultMap="userList" >
+        SELECT username,realName,sex,role,dept_id,
+        isDelete,create_time
+        FROM user WHERE dept_id=#{deptId} AND isDelete=0
+    </select>
+    <!--List<User> findAllRol() 查询所有角色信息-->
+    <select id="findAllRol" resultMap="userList" >
+        SELECT username,realName,sex,role,dept_id,
+        isDelete,create_time
+        FROM user WHERE isDelete=0
+    </select>
+    <!--int findByUid(int id) 根据用户id查找用户-->
+    <select id="findByUid" resultMap="userList" >
+        SELECT count(*)
+        FROM user WHERE id=#{id} AND isDelete=0
+    </select>
+    <!--int modifyRolById(User user) 设置用户角色信息-->
+    <update id="modifyRol">
+        UPDATE user SET username=#{username},realName=#{realName},sex=#{sex},
+        role=#{role},dept_id=#{deptId},modify_time=#{modifyTime} WHERE id=#{id}
+    </update>
+    <!--int deleteRolById(Integer[] ids) 删除用户角色-->
+    <delete id="deleteRolById">
+        DELETE FROM user WHERE id IN (<foreach collection="array" separator="," item="ids">#{ids}</foreach>)
+    </delete>
+</mapper>

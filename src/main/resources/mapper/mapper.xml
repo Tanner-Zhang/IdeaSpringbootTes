@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.demo.dao.Mapper">
+	 <!--登录-->
+	<select id="login" resultType="com.cy.demo.entity.User">
+		select * from user
+		where username=#{username}
+	</select>
+	<select id="findAll" resultType="com.cy.demo.entity.User">
+		select * from user
+	</select>
+	<!--1级菜单查询-->
+	<select id="systemMenuQuery" resultType="com.cy.demo.entity.SystemMenu">
+        select * from systemmenu
+	</select>
+
+	<!--2级菜单查询-->
+	<select id="menuQuery" parameterType="java.lang.Integer" resultType="com.cy.demo.entity.Menu">
+
+		<!--in-->
+       select * from menu where menu_id IN (
+         select mid from sid_mid where sid=#{systemMenu_id}
+         )
+
+		<!--exists-->
+		<!--select * from menu where EXISTS(
+		select mid from sid_mid where sid=#{systemMenu_id}
+		)-->
+
+
+	</select>
+
+	<!--3级菜单查询-->
+	<select id="chlidrenQuery"  parameterType="java.lang.Integer" resultType="com.cy.demo.entity.Children">
+
+        <!--in-->
+        select * from  children where children_id in(
+            select cid from mid_cid where mid=#{menu_id}
+            )
+
+		<!--exists-->
+		<!--select * from children where EXISTS(
+		select cid from mid_cid where mid=#{menu_id}
+		)-->
+
+	</select>
+
+	<!--1级菜单新增-->
+	<insert id="systemMenuCreate" parameterType="java.lang.Object">
+		insert into systemmenu(
+		title,
+		icon,
+		isCurrent
+		) values (
+		#{title1},
+		#{icon1},
+		#{isCurrent1}
+		)
+	</insert>
+
+	<!--2级菜单新增-->
+	<insert id="menuCreate" parameterType="java.lang.Object">
+		insert into menu (
+		title,
+		icon,
+		isCurrent
+		) values (
+		#{title2},
+		#{icon2},
+		#{isCurrent2}
+		)
+	</insert>
+
+
+	<!--3级菜单新增-->
+	<insert id="childrenCreate" parameterType="java.lang.Object">
+		insert into children (
+		title,
+		href,
+		isCurrent
+		)values (
+		#{title3},
+		#{href},
+		#{isCurrent3}
+		)
+	</insert>
+
+
+	<!--通过title1查询1级菜单id-->
+   <select id="querySystemMenu_idByTitle" parameterType="java.lang.String" resultType="java.lang.Integer">
+	   select systemMenu_id from systemmenu
+	   where title=#{title1}
+   </select>
+
+
+	<!--通过title2查询2级菜单id-->
+	<select id="queryMenu_idByTitle" parameterType="java.lang.String" resultType="java.lang.Integer">
+	   select menu_id from menu
+	   where title=#{title2}
+   </select>
+
+	<!--通过title3查询3级菜单id-->
+	<select id="queryChildren_idByTitle" parameterType="java.lang.String" resultType="java.lang.Integer">
+	   select children_id from children
+	   where title=#{title3}
+   </select>
+
+	<!--新增sid_mid关系-->
+	<insert id="smAdd" parameterType="java.lang.Integer">
+		insert into sid_mid(
+        sid,
+        mid
+		)values (
+		#{systemMenu_id},
+		#{menu_id}
+		)
+	</insert>
+
+
+	<!--新增mid_cid关系-->
+	<insert id="mcAdd" parameterType="java.lang.Integer">
+		insert into mid_cid(
+        mid,
+        cid
+		)values (
+		#{menu_id},
+        #{children_id}
+		)
+	</insert>
+
+
+</mapper>
