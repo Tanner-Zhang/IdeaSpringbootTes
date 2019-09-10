@@ -1,10 +1,10 @@
 package com.cy.demo.service;
 
+import com.cy.demo.entity.SystemMenu;
 import com.cy.demo.service.impl.MenuService;
 import com.cy.demo.dao.Mapper;
 import com.cy.demo.entity.Children;
 import com.cy.demo.entity.Menu;
-import com.cy.demo.entity.SystemMenu;
 import com.cy.demo.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

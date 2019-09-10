@@ -1,8 +1,8 @@
 package com.cy.demo.controller;
 
 
-import com.cy.demo.service.impl.IUserService;
 import com.cy.demo.service.impl.LoginService;
+import com.cy.demo.service.impl.IUserService;
 import com.cy.demo.entity.JobInfo;
 import com.cy.demo.entity.Log;
 import com.cy.demo.entity.User;
@@ -71,9 +71,9 @@ public class UserController {
             jobInfo.setDeptNo(i);
             jobInfo.setdName("采购部");
             jobInfo.setJob("采购部经理");
-            jobInfo.setCreateUser("admin");
-            jobInfo.setCreateTime(new Date());
-            jobInfo.setStatus("测试阶段");
+            jobInfo.setCreatedUser("admin");
+            jobInfo.setCreatedTime(new Date());
+            jobInfo.setLoc("测试阶段");
             list.add(jobInfo);
         }
         for(int i=4;i<8;i++){
@@ -81,9 +81,9 @@ public class UserController {
             jobInfo.setDeptNo(i);
             jobInfo.setdName("人事部");
             jobInfo.setJob("人事部主管");
-            jobInfo.setCreateUser("admin");
-            jobInfo.setCreateTime(new Date());
-            jobInfo.setStatus("测试阶段");
+            jobInfo.setCreatedUser("admin");
+            jobInfo.setCreatedTime(new Date());
+            jobInfo.setLoc("测试阶段");
             list.add(jobInfo);
         }
         for(int i=8;i<12;i++){
@@ -91,9 +91,9 @@ public class UserController {
             jobInfo.setDeptNo(i);
             jobInfo.setdName("财务部");
             jobInfo.setJob("会计");
-            jobInfo.setCreateUser("admin");
-            jobInfo.setCreateTime(new Date());
-            jobInfo.setStatus("测试阶段");
+            jobInfo.setCreatedUser("admin");
+            jobInfo.setCreatedTime(new Date());
+            jobInfo.setLoc("测试阶段");
             list.add(jobInfo);
         }
         map.put("total",11);
