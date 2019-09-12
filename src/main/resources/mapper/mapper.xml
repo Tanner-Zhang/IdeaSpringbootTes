@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cy.demo.dao.Mapper">
+<mapper namespace="com.zyt.demo.dao.MenuMapper">
 	 <!--登录-->
-	<select id="login" resultType="com.cy.demo.entity.User">
+	<select id="login" resultType="com.zyt.demo.entity.User">
 		select * from user
 		where username=#{username}
 	</select>
-	<select id="findAll" resultType="com.cy.demo.entity.User">
+	<select id="findAll" resultType="com.zyt.demo.entity.User">
 		select * from user
 	</select>
 	<!--1级菜单查询-->
-	<select id="systemMenuQuery" resultType="com.cy.demo.entity.SystemMenu">
+	<select id="systemMenuQuery" resultType="com.zyt.demo.entity.SystemMenu">
         select * from systemmenu
 	</select>
 
 	<!--2级菜单查询-->
-	<select id="menuQuery" parameterType="java.lang.Integer" resultType="com.cy.demo.entity.Menu">
+	<select id="menuQuery" parameterType="java.lang.Integer" resultType="com.zyt.demo.entity.Menu">
 
 		<!--in-->
        select * from menu where menu_id IN (
@@ -32,7 +32,7 @@
 	</select>
 
 	<!--3级菜单查询-->
-	<select id="chlidrenQuery"  parameterType="java.lang.Integer" resultType="com.cy.demo.entity.Children">
+	<select id="chlidrenQuery"  parameterType="java.lang.Integer" resultType="com.zyt.demo.entity.Children">
 
         <!--in-->
         select * from  children where children_id in(
