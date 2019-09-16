@@ -29,6 +29,11 @@
         SELECT count(*)
         FROM user WHERE id=#{id} AND isDelete=0
     </select>
+    <!--User findByUserName(String UserName) 根据用户名查询用户信息-->
+    <select id="findByUserName" resultMap="userList">
+        SELECT username,realName,password,role
+        FROM user WHERE username=#{username} AND isDelete=0
+    </select>
     <!--int modifyRolById(User user) 设置用户角色信息-->
     <update id="modifyRol">
         UPDATE user SET username=#{username},realName=#{realName},sex=#{sex},

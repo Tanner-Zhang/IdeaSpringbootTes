@@ -52,6 +52,11 @@ public class userTest {
         System.err.print(row);
     }
     @Test
+    public void findUser(){
+        User user = mapper.findByUserName("user");
+        System.err.println(user);
+    }
+    @Test
     public void deleteRol(){
         Integer[] ids = {5,6,7};
         int row = mapper.deleteRolById(ids);

@@ -1,11 +1,15 @@
 package com.zyt.demo.controller;
 
 
+import com.zyt.demo.dao.UserMapper;
 import com.zyt.demo.entity.Log;
 import com.zyt.demo.entity.User;
 import com.zyt.demo.service.impl.IUserService;
 import com.zyt.demo.service.impl.LoginService;
 import com.zyt.demo.util.Result;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -19,6 +23,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @Author tanner
+ * @Date 2019/9/16
+ */
 @Controller
 public class UserController {
 
@@ -28,31 +36,41 @@ public class UserController {
     private LoginService loginService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private UserMapper userMapper;
+    @RequestMapping(value = "/notLogin", method = RequestMethod.GET)
+    public String notLogin() {
+        return "您尚未登陆！";
+    }
 
+    @RequestMapping(value = "/notRole", method = RequestMethod.GET)
+    public String notRole() {
+        return "您没有权限！";
+    }
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
     public Result login(String username, String password, HttpServletResponse response){
 
-           System.out.println(username+"~~~"+password);
-
-           User user =new User();
-           user.setUsername(username);
-           user.setPassword(password);
-
-           Result result=this.loginService.login(username,password);
-            //登陆成功
-           if (result.getStatus()==1){
-
-               /*JwtUtil jwtUtil =new JwtUtil();
-               String token =jwtUtil.tokenBuild(username, password);
-               Cookie cookie = new Cookie("token", token);
-               response.addCookie(cookie);
-
-               redisTemplate.boundListOps(username).rightPush(token);*/
-
-           }
-
-    return result;
+        System.out.println(username+"~~~"+password);
+        Result result = new Result();
+        // 从SecurityUtils里边创建一个 subject
+        Subject subject = SecurityUtils.getSubject();
+        // 在认证提交前准备 token（令牌）
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        // 执行认证登陆
+        subject.login(token);
+        //根据权限，指定返回数据
+        String role = userMapper.findByUserName(username).getRole();
+        if ("管理员".equals(role)) {
+            result = loginService.login(username, password);
+            result.setMessage("欢迎登陆！");
+        }else if ("超级管理员".equals(role)) {
+            result = loginService.login(username, password);
+            System.err.println("欢迎来到管理员页面");
+        }else {
+            result.setMessage("权限错误！");
+        }
+        return result;
     }
     @RequestMapping("/statics/pages/user")
     public String userList(ModelMap model){

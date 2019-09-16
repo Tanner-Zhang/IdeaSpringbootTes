@@ -22,18 +22,6 @@ public interface UserMapper {
      * @return 查询结果集
      */
     List<User> findAllRol();
-    /**
-     * 设置用户角色信息
-     * @param user 要修改的用户信息
-     * @return 受影响行数
-     */
-    int modifyRol(User user);
-    /**
-     * 删除用户角色
-     * @param ids 用户id数组
-     * @return 受影响行数
-     */
-    int deleteRolById(Integer[] ids);
 
     /**
      * 根据用户id查找用户
@@ -41,4 +29,24 @@ public interface UserMapper {
      * @return 符合条件行数
      */
     int findByUid(int id);
+
+    /**
+     * 根据用户名查询用户信息
+     * @param UserName
+     * @return 查询结果
+     */
+    User findByUserName(String UserName);
+    /**
+     * 设置用户角色信息
+     * @param user 要修改的用户信息
+     * @return 受影响行数
+     */
+    int modifyRol(User user);
+
+    /**
+     * 删除用户角色
+     * @param ids 用户id数组
+     * @return 受影响行数
+     */
+    int deleteRolById(Integer[] ids);
 }
