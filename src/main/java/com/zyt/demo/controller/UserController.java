@@ -9,6 +9,7 @@ import com.zyt.demo.service.impl.LoginService;
 import com.zyt.demo.util.Result;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +52,7 @@ public class UserController {
     }
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public Result login(String username, String password, HttpServletResponse response){
+    public Result login(String username, String password, HttpServletRequest request){
 
         System.out.println(username+"~~~"+password);
         Result result = new Result();
@@ -59,6 +62,14 @@ public class UserController {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         // 执行认证登陆
         subject.login(token);
+        //方法一:使用容器创建的session
+        /*HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(3);
+        session.setAttribute("username",username);*/
+        //方法二:使用Subject获得session
+        Session session = subject.getSession();
+        session.setAttribute("username",username);
+        session.setTimeout(10000);
         //根据权限，指定返回数据
         String role = userMapper.findByUserName(username).getRole();
         if ("管理员".equals(role)) {
