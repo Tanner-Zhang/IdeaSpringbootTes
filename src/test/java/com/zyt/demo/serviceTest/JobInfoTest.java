@@ -1,7 +1,7 @@
 package com.zyt.demo.serviceTest;
 
 import com.zyt.demo.entity.JobInfo;
-import com.zyt.demo.service.impl.JobInfoServiceImple;
+import com.zyt.demo.service.JobInfoServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.List;
 @SpringBootTest
 public class JobInfoTest {
     @Autowired
-    JobInfoServiceImple service;
+    JobInfoServiceImpl service;
     @Test
     public void getJobInfo(){
         List<JobInfo> list = service.getJobInfo();

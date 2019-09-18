@@ -1,16 +1,16 @@
-package com.zyt.demo.service.impl;
+package com.zyt.demo.service;
 
 import com.zyt.demo.dao.JobInfoMapper;
 import com.zyt.demo.entity.JobInfo;
-import com.zyt.demo.service.JobInfoService;
 import com.zyt.demo.service.ex.JobInfoNotFoundException;
+import com.zyt.demo.service.impl.JobInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 @Service
-public class JobInfoServiceImple implements JobInfoService {
+public class JobInfoServiceImpl implements JobInfoService {
     @Autowired
     private JobInfoMapper mapper;
     private List<JobInfo> JobInfos = new ArrayList<>();

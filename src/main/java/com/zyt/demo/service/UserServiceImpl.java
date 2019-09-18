@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class UserServiceImple implements IUserService {
+public class UserServiceImpl implements IUserService {
     @Autowired
     UserMapper userMapper;
     @Override

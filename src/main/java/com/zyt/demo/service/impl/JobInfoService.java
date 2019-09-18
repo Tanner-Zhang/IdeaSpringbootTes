@@ -1,4 +1,4 @@
-package com.zyt.demo.service;
+package com.zyt.demo.service.impl;
 
 import com.zyt.demo.service.ex.JobInfoNotFoundException;
 import com.zyt.demo.entity.JobInfo;

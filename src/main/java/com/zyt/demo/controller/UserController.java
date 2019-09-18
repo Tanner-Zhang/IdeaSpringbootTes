@@ -69,7 +69,7 @@ public class UserController {
         //方法二:使用Subject获得session
         Session session = subject.getSession();
         session.setAttribute("username",username);
-        session.setTimeout(10000);
+        session.setTimeout(100000);
         //根据权限，指定返回数据
         String role = userMapper.findByUserName(username).getRole();
         if ("管理员".equals(role)) {
